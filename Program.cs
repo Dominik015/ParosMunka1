@@ -1,4 +1,5 @@
-﻿using System;
+//Csapat: Párványik Dániel, Vékony Dominik
+using System;
 using System.Collections.Generic;
 
 namespace Triangle_Program
@@ -182,3 +183,4 @@ namespace Triangle_Program
         }
     }
 }
+

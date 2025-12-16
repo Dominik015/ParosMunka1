@@ -1,186 +1,616 @@
-//Csapat: Párványik Dániel, Vékony Dominik
-using System;
-using System.Collections.Generic;
+﻿// CSAPATTAGOK : Vékony Dominik és Párványik Dániel
+using System.Diagnostics;
 
 namespace Triangle_Program
 {
     internal class Program
     {
-        static bool futas = true;
-
         static void Main(string[] args)
         {
             UdvozloKep();
-            // todo: Dániel
-            List<string> menupontok = new List<string>()
-            {
-                "Kerület számítása",
-                "Terület számítása",
-                "Hiányzó oldal számítása derékszögű háromszögnél",
-                "Háromszög ábrázolása",
-                "Kilépés"
-            };
-
+            List<string> menupontok = new List<string>();
+            menupontok.Add("Kerület számítása");
+            menupontok.Add("Terület számítása");
+            menupontok.Add("Hiányzó adatok számítása");
+            menupontok.Add("Háromszög ábrázolása");
+            menupontok.Add("Szerkeszthetőség");
+            menupontok.Add("Kilépés");
             ListazMenu(menupontok);
 
+            bool futas = true;
             do
             {
-                Console.WriteLine();
-                Console.Write("Mit szeretne csinálni? ");
+                Console.WriteLine("\n");
+                Console.Write("Mit szeretne csinálni? : ");
                 byte inputUtasitas = Convert.ToByte(Console.ReadLine());
-                ElvegzendoFeladat(inputUtasitas);
+                futas = ElvegzendoFeladat(inputUtasitas);               
             }
             while (futas);
 
+            Console.WriteLine("\n");
+            int consoleYValue = Console.CursorTop;
+            Console.SetCursorPosition(45, consoleYValue);
             Console.WriteLine("Vége!");
         }
 
+        // TODO (Dani) : ListazMenu
         private static void ListazMenu(List<string> menupontok)
         {
-            Console.WriteLine(
-                "| " + menupontok[0] + " [1] | " +
-                menupontok[1] + " [2] | " +
-                menupontok[2] + " [3] | " +
-                menupontok[3] + " [4] | " +
-                menupontok[4] + " [5] |"
-            );
+            Console.WriteLine("\n");
+            Console.WriteLine("| " + menupontok[0] + " [1] | " + menupontok[1] + " [2] | " + menupontok[2] + " [3] | \n" + "| " + menupontok[3] + " [4] | " + menupontok[4] + " [5] | " + menupontok[5] + " [6] |");
         }
 
-        private static void ElvegzendoFeladat(byte inputUtasitas)
+        // TODO (Dani) : ElvegzendoFeladat
+        private static bool ElvegzendoFeladat(byte inputUtasitas)
         {
             switch (inputUtasitas)
             {
                 case 1:
-                    Console.Write("Adja meg az A oldalt: ");
+                    Console.WriteLine("<- Háromszög kerületének számítása! ->\n");
+                    Console.Write("Adja meg az a oldalt: ");
                     double aOldal = Convert.ToDouble(Console.ReadLine());
-
-                    Console.Write("Adja meg a B oldalt: ");
+                    Console.Write("Adja meg az b oldalt: ");
                     double bOldal = Convert.ToDouble(Console.ReadLine());
-
-                    Console.Write("Adja meg a C oldalt: ");
+                    Console.Write("Adja meg az c oldalt: ");
                     double cOldal = Convert.ToDouble(Console.ReadLine());
-
                     KeruletSzamitas(aOldal, bOldal, cOldal);
-                    break;
-
+                    return true;
                 case 2:
-                    Console.Write("Adja meg az alapot: ");
-                    double alap = Convert.ToDouble(Console.ReadLine());
-
-                    Console.Write("Adja meg a magasságot: ");
+                    Console.WriteLine("<- Háromszög területének számítása! ->\n");
+                    Console.Write("Adja meg a háromszög adott oldalához tartozó magasságot: ");
+                    double magasssagOldal = Convert.ToDouble(Console.ReadLine());
+                    Console.Write("Adja meg a háromszög adott magasságához tartozó oldalt: ");
                     double magassag = Convert.ToDouble(Console.ReadLine());
-
-                    TeruletSzamitas(alap, magassag);
-                    break;
-
+                    TeruletSzamitas(magasssagOldal, magassag);
+                    return true;
                 case 3:
-
-                    Console.Write("A oldal: ");
-                    string a = Console.ReadLine();
-
-                    Console.Write("B oldal: ");
-                    string b = Console.ReadLine();
-
-                    Console.Write("C oldal: ");
-                    string c = Console.ReadLine();
-
-                    Console.Write("Alfa szög: ");
-                    string alfa = Console.ReadLine();
-
-                    Console.Write("Béta szög: ");
-                    string beta = Console.ReadLine();
-
-                    Console.Write("Gamma szög: ");
-                    string gamma = Console.ReadLine();
-
-                    HianyzoAdatokSzamitasa(a, b, c, alfa, beta, gamma);
-                    break;
-
+                    Console.WriteLine("<- Derékszögű háromszög hiányzó adatainak számítása! ->\n");
+                    Console.Write("Adja meg az a oldalt: ");
+                    string aOldalMegadott = Console.ReadLine();
+                    Console.Write("Adja meg az b oldalt: ");
+                    string bOldalMegadott = Console.ReadLine();
+                    Console.Write("Adja meg az c oldalt: ");
+                    string cOldalMegadott = Console.ReadLine();
+                    Console.Write("Adja meg az αlfa szöget: ");
+                    string alfaSzogMegadott = Console.ReadLine();
+                    Console.Write("Adja meg a beta szöget: ");
+                    string betaSzoglMegadott = Console.ReadLine();
+                    Console.Write("Adja meg a gamma szöget: ");
+                    string gammaSzogMegadott = Console.ReadLine();
+                    HianyzoAdatokSzamitasa(aOldalMegadott, bOldalMegadott, cOldalMegadott, alfaSzogMegadott, betaSzoglMegadott, gammaSzogMegadott);
+                    return true;
                 case 4:
-                    Console.WriteLine("Ábrázolás nincs kész.");
-                    break;
-
+                    Console.WriteLine("<- Általános háromszög rajzolása! ->\n");
+                    Console.Write("Adja meg az a oldalt: ");
+                    double aOldalRajzolashoz = Convert.ToDouble(Console.ReadLine());
+                    Console.Write("Adja meg az b oldalt: ");
+                    double bOldalRajzolashoz = Convert.ToDouble(Console.ReadLine());
+                    Console.Write("Adja meg az c oldalt: ");
+                    double cOldalRajzolashoz = Convert.ToDouble(Console.ReadLine());
+                    DrawTriangle(aOldalRajzolashoz, bOldalRajzolashoz, cOldalRajzolashoz);
+                    return true;
                 case 5:
-                    futas = false;
-                    break;
-
+                    Console.WriteLine("<- Szerkeszthető-e a háromszög? ->\n");
+                    Console.Write("Adja meg az a oldalt: ");
+                    double aOldalSzerkeszteshez = Convert.ToDouble(Console.ReadLine());
+                    Console.Write("Adja meg az b oldalt: ");
+                    double bOldalSzerkeszteshez = Convert.ToDouble(Console.ReadLine());
+                    Console.Write("Adja meg az c oldalt: ");
+                    double cOldalSzerkeszteshez = Convert.ToDouble(Console.ReadLine());
+                    if (SzerkeszhetoeHaromszog(aOldalSzerkeszteshez, bOldalSzerkeszteshez, cOldalSzerkeszteshez))
+                    {
+                        Console.WriteLine("A háromszög szerkeszthető.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("A háromszög nem szerkeszthető.");
+                    }
+                    return true;
+                case 6:
+                    Console.WriteLine("\n");
+                    Console.WriteLine("Kilépés!");
+                    return false;
                 default:
-                    Console.WriteLine("");
-                    break;
+                    Console.WriteLine("Érvénytelen menüpont!");
+                    return true;
             }
         }
-        // todo: Dominik
-        private static double KeruletSzamitas(double a, double b, double c)
-        {
-            double kerulet = a + b + c;
-            Console.WriteLine($"A háromszög kerülete: {kerulet}");
-            return kerulet;
-        }
-
-        private static double TeruletSzamitas(double alap, double magassag)
-        {
-            double terulet = alap * magassag / 2;
-            Console.WriteLine($"A háromszög területe: {terulet}");
-            return terulet;
-        }
-
-        private static void HianyzoAdatokSzamitasa(
-            string aOld,
-            string bOld,
-            string cOld,
-            string alfaSzog,
-            string betaSzog,
-            string gammaSzog)
-        {
-            bool vanA = !string.IsNullOrWhiteSpace(aOld);
-            bool vanB = !string.IsNullOrWhiteSpace(bOld);
-            bool vanC = !string.IsNullOrWhiteSpace(cOld);
-
-            bool alfa90 = alfaSzog == "90";
-            bool beta90 = betaSzog == "90";
-            bool gamma90 = gammaSzog == "90";
-
-            if (!(alfa90 || beta90 || gamma90))
-            {
-                Console.WriteLine("Csak derékszögű háromszög számítása van.");
-                return;
-            }
-
-            if (vanA && vanB && !vanC)
-            {
-                double a = Convert.ToDouble(aOld);
-                double b = Convert.ToDouble(bOld);
-                double c = Math.Sqrt(a * a + b * b);
-                Console.WriteLine($"Hiányzó C oldal: {c}");
-                return;
-            }
-
-            if (vanA && vanC && !vanB)
-            {
-                double a = Convert.ToDouble(aOld);
-                double c = Convert.ToDouble(cOld);
-                double b = Math.Sqrt(c * c - a * a);
-                Console.WriteLine($"Hiányzó B oldal: {b}");
-                return;
-            }
-
-            if (vanB && vanC && !vanA)
-            {
-                double b = Convert.ToDouble(bOld);
-                double c = Convert.ToDouble(cOld);
-                double a = Math.Sqrt(c * c - b * b);
-                Console.WriteLine($"Hiányzó A oldal: {a}");
-                return;
-            }
-            else
-                Console.WriteLine("Nincs elég adat a számításhoz.");
-        }
-
         private static void UdvozloKep()
         {
             Console.Clear();
-            Console.WriteLine("Üdvözlöm a háromszög szuper alkalmazásban!");
+            Console.SetCursorPosition(30, 0);
+            Console.WriteLine("Üdvözlöm a Háromszög Szuper alkalmazásban!");
+            Console.SetCursorPosition(10, 1);
+            Console.WriteLine("\nTudnivaló: a program az általános jelölését alkalmazza a háromszög oldalainak és szögeinek!");
+            Console.WriteLine("\n Átfogó jelölése: c - Egyik befogó: a - Másik befogó: b");
+            char alfaJel = 'α';
+            char betaJel = 'β';
+            char gammaJel = 'γ';
+            Console.WriteLine($"\n c oldalhoz tartozó szög: {gammaJel} - a oldalhoz tartozó szög: {alfaJel} - b oldalhoz tartozó szög: {betaJel}");
         }
-    }
-}
 
+        // TODO (Dominik) : KeruletSzamitas
+        private static void KeruletSzamitas(double aOldal, double bOldal, double cOldal)
+        {
+
+            Console.WriteLine($"A háromszög kerülete: {aOldal + bOldal + cOldal}");
+        }
+
+        // TODO (Dominik) : TeruletSzamitas
+        private static void TeruletSzamitas(double magassagOldal, double magassag)
+        {
+
+            Console.WriteLine($"A háromszög területe: {magassagOldal * magassag / 2}");
+        }
+
+        // TODO (Dani) : DrawTriangle
+        private static void DrawTriangle(double aOldalRajzolashoz, double bOldalRajzolashoz, double cOldalRajzolashoz)
+        {
+            if (aOldalRajzolashoz <= 0 || bOldalRajzolashoz <= 0 || cOldalRajzolashoz <= 0)
+            {
+                throw new ArgumentException("Az oldalak értéke nem lehet 0 vagy negatív.");
+            }
+            else if (!SzerkeszhetoeHaromszog(aOldalRajzolashoz, bOldalRajzolashoz, cOldalRajzolashoz))
+            {
+                throw new ArgumentException("A megadott oldalakból nem szerkeszthető háromszög!");    
+            }
+            //char signDraw = '*';
+            //int y = Console.CursorTop;
+
+            //for (int i = 0; i < aOldalRajzolashoz; i++)
+            //{
+            //    Console.SetCursorPosition(30+i, y+i);
+            //    Console.WriteLine(signDraw);
+            //}
+            //for (int i = 0; i < cOldalRajzolashoz; i++)
+            //{
+            //    Console.SetCursorPosition(30+i, y+i);
+            //    Console.WriteLine(signDraw);
+            //}
+            //for (int i = 0; i < bOldalRajzolashoz; i++)
+            //{
+            //    Console.SetCursorPosition(30 + i, y + i);
+            //    Console.WriteLine(signDraw);
+            //}
+            char sign = '*';
+
+            int startX = (Console.WindowWidth - (int)aOldalRajzolashoz) / 2;
+            int startY = Console.CursorTop + 1;
+
+            int Ax = startX;
+            int Ay = startY;
+
+            int Bx = startX + (int)aOldalRajzolashoz;
+            int By = startY;
+
+            int height = (int)Math.Min(bOldalRajzolashoz, cOldalRajzolashoz);
+            int Cx = startX + (int)(aOldalRajzolashoz / 2);
+            int Cy = startY + height;
+
+            for (int x = Ax; x <= Bx; x++)
+            {
+                Console.SetCursorPosition(x, Ay);
+                Console.Write(sign);
+            }
+            for (int i = 0; i < height; i++)
+            {
+                Console.SetCursorPosition(Ax + i, Ay + i);
+                Console.Write(sign);
+            }
+            for (int i = 0; i <= height; i++)
+            {
+                Console.SetCursorPosition(Bx - i, By + i);
+                Console.Write(sign);
+            }
+        }
+
+        // TODO (Dominik) : HianyzoAdatokSzamitasa
+        private static void HianyzoAdatokSzamitasa(string aOldalMegadott, string bOldalMegadott, string cOldalMegadott, string alfaSzogMegadott, string betaSzogMegadott, string gammaSzogMegadott)
+        {
+            bool vanMegadvaAOldal = double.TryParse(aOldalMegadott, out double a);
+            bool vanMegadvaBOldal = double.TryParse(bOldalMegadott, out double b);
+            bool vanMegadvaCOldal = double.TryParse(cOldalMegadott, out double c);
+
+            bool vanMegadvaAlfaSzog = double.TryParse(alfaSzogMegadott, out double alfa);
+            bool vanMegadvaBetaSzog = double.TryParse(betaSzogMegadott, out double beta);
+            bool vanMegadvaGammaSzog = double.TryParse(gammaSzogMegadott, out double gamma);
+
+            //if (alfaSzogMegadott != "90" || alfaSzogMegadott != "")
+            //{
+            //    throw new ArgumentException("Ez a számítás csak derékszögű háromszögre vonatkozik (γ/a/ß = 90°).");
+            //}
+            /*
+                c = a / sin(α)(átfogó)
+                c = b / cos(α)(átfogó)
+                a = c * sin(α)(szemközti befogó)
+                b = c * cos(α)(melletti befogó)
+                a = b * tg(α)(szemközti befogó)
+                b = a / tg(α)(melletti befogó)
+                */
+            // a + b → c
+            if (vanMegadvaAOldal && vanMegadvaBOldal && !vanMegadvaCOldal)
+            {
+                if (!vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && !vanMegadvaGammaSzog)
+                {
+                    double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                    double atalakitottBOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                    double cOldalKeresett = Math.Sqrt(atalakitottAOldalMegadott * atalakitottAOldalMegadott + atalakitottBOldalMegadott * atalakitottBOldalMegadott);
+                    double alfaSzogKeresett = 90;
+                    double betaSzogKeresett = Math.Asin(atalakitottAOldalMegadott / cOldalKeresett) * 180 / Math.PI;
+                    double gammaSzogKeresett = Math.Asin(atalakitottBOldalMegadott / cOldalKeresett) * 180 / Math.PI;
+                    char alfaJel = 'α';
+                    char betaJel = 'β';
+                    char gammaJel = 'γ';
+                    Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                    Console.WriteLine($"c = {cOldalKeresett:F2}");
+                    Console.WriteLine($"{alfaJel} = {alfaSzogKeresett}°");
+                    Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                    Console.WriteLine($"{gammaJel} = {gammaSzogKeresett:F2}°");
+                }
+                else if (vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && !vanMegadvaGammaSzog)
+                {
+                    double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                    double atalakitottBOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                    double atalakitottAlfaSzogMegadott = Convert.ToDouble(alfaSzogMegadott);
+                    double cOldalKeresett = Math.Sqrt(atalakitottAOldalMegadott * atalakitottAOldalMegadott + atalakitottBOldalMegadott * atalakitottBOldalMegadott);
+                    double betaSzogKeresett = Math.Asin(atalakitottAOldalMegadott / cOldalKeresett) * 180 / Math.PI;
+                    double gammaSzogKeresett = Math.Asin(atalakitottBOldalMegadott / cOldalKeresett) * 180 / Math.PI;
+                    char alfaJel = 'α';
+                    char betaJel = 'β';
+                    char gammaJel = 'γ';
+                    Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                    Console.WriteLine($"c = {cOldalKeresett:F2}");
+                    Console.WriteLine($"{alfaJel} = {atalakitottAlfaSzogMegadott}°");
+                    Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                    Console.WriteLine($"{gammaJel} = {gammaSzogKeresett:F2}°");
+                }
+                else if (!vanMegadvaAlfaSzog && vanMegadvaBetaSzog && !vanMegadvaGammaSzog)
+                {
+                    double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                    double atalakitottBOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                    double alfaSzogKeresett = 90;
+                    double cOldalKeresett = Math.Sqrt(atalakitottAOldalMegadott * atalakitottAOldalMegadott + atalakitottBOldalMegadott * atalakitottBOldalMegadott);
+                    double gammaSzogKeresett = Math.Asin(atalakitottBOldalMegadott / cOldalKeresett) * 180 / Math.PI;
+                    char alfaJel = 'α';
+                    char betaJel = 'β';
+                    char gammaJel = 'γ';
+                    Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                    Console.WriteLine($"c = {cOldalKeresett:F2}");
+                    Console.WriteLine($"{alfaJel} = {alfaSzogKeresett}°");
+                    Console.WriteLine($"{gammaJel} = {gammaSzogKeresett:F2}°");
+                }
+                else if (!vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && vanMegadvaGammaSzog)
+                {
+                    double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                    double atalakitottBOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                    double atalakitottAlfaSzogMegadott = Convert.ToDouble(alfaSzogMegadott);
+                    double cOldalKeresett = Math.Sqrt(atalakitottAOldalMegadott * atalakitottAOldalMegadott + atalakitottBOldalMegadott * atalakitottBOldalMegadott);
+                    double betaSzogKeresett = Math.Asin(atalakitottAOldalMegadott / cOldalKeresett) * 180 / Math.PI;
+                    char alfaJel = 'α';
+                    char betaJel = 'β';
+                    char gammaJel = 'γ';
+                    Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                    Console.WriteLine($"c = {cOldalKeresett:F2}");
+                    Console.WriteLine($"{alfaJel} = {atalakitottAlfaSzogMegadott}°");
+                    Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                }
+                else if (vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && vanMegadvaGammaSzog)
+                {
+                    double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                    double atalakitottBOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                    double atalakitottAlfaSzogMegadott = Convert.ToDouble(alfaSzogMegadott);
+                    double cOldalKeresett = Math.Sqrt(atalakitottAOldalMegadott * atalakitottAOldalMegadott + atalakitottBOldalMegadott * atalakitottBOldalMegadott);
+                    double betaSzogKeresett = Math.Asin(atalakitottAOldalMegadott / cOldalKeresett) * 180 / Math.PI;
+                    char alfaJel = 'α';
+                    char betaJel = 'β';
+                    char gammaJel = 'γ';
+                    Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                    Console.WriteLine($"c = {cOldalKeresett:F2}");
+                    Console.WriteLine($"{alfaJel} = {atalakitottAlfaSzogMegadott}°");
+                    Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                }
+                else if (vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && vanMegadvaGammaSzog)
+                {
+                    double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                    double atalakitottBOldalMegadott = Convert.ToDouble(bOldalMegadott);    
+                    double cOldalKeresett = Math.Sqrt(atalakitottAOldalMegadott * atalakitottAOldalMegadott + atalakitottBOldalMegadott * atalakitottBOldalMegadott);
+                    double betaSzogKeresett = Math.Asin(atalakitottAOldalMegadott / cOldalKeresett) * 180 / Math.PI;
+                    char alfaJel = 'α';
+                    char betaJel = 'β';
+                    char gammaJel = 'γ';
+                    Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                    Console.WriteLine($"c = {cOldalKeresett:F2}");
+                    Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                }
+                else if (!vanMegadvaAlfaSzog && vanMegadvaBetaSzog && vanMegadvaGammaSzog)
+                {
+                    double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                    double atalakitottBOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                    double atalakitottAlfaSzogMegadott = Convert.ToDouble(alfaSzogMegadott);
+                    double cOldalKeresett = Math.Sqrt(atalakitottAOldalMegadott * atalakitottAOldalMegadott + atalakitottBOldalMegadott * atalakitottBOldalMegadott);
+                    char alfaJel = 'α';
+                    char betaJel = 'β';
+                    char gammaJel = 'γ';
+                    Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                    Console.WriteLine($"c = {cOldalKeresett:F2}");
+                    Console.WriteLine($"{alfaJel} = {atalakitottAlfaSzogMegadott}°");
+                }
+                else
+                {
+                    double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                    double atalakitottBOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                    double cOldalKeresett = Math.Sqrt(atalakitottAOldalMegadott * atalakitottAOldalMegadott + atalakitottBOldalMegadott * atalakitottBOldalMegadott);
+                    Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                    Console.WriteLine($"c = {cOldalKeresett:F2}");
+                }
+
+                if (vanMegadvaAOldal && vanMegadvaCOldal && !vanMegadvaBOldal)
+                {
+                    if (!vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && !vanMegadvaGammaSzog)
+                    {
+                        double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(cOldalMegadott);
+                        double bOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottAOldalMegadott * atalakitottAOldalMegadott);
+                        double alfaSzogKeresett = 90;
+                        double betaSzogKeresett = Math.Asin(atalakitottAOldalMegadott / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        double gammaSzogKeresett = Math.Asin(bOldalKeresett / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        char alfaJel = 'α';
+                        char betaJel = 'β';
+                        char gammaJel = 'γ';
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"b = {bOldalKeresett:F2}");
+                        Console.WriteLine($"{alfaJel} = {alfaSzogKeresett}°");
+                        Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                        Console.WriteLine($"{gammaJel} = {gammaSzogKeresett:F2}°");
+                    }
+                    else if (vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && !vanMegadvaGammaSzog)
+                    {
+                        double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(cOldalMegadott);
+                        double atalakitottAlfaSzogMegadott = Convert.ToDouble(alfaSzogMegadott);
+                        double bOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottAOldalMegadott * atalakitottAOldalMegadott);
+                        double betaSzogKeresett = Math.Asin(atalakitottAOldalMegadott / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        double gammaSzogKeresett = Math.Asin(bOldalKeresett / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        char alfaJel = 'α';
+                        char betaJel = 'β';
+                        char gammaJel = 'γ';
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"b = {bOldalKeresett:F2}");
+                        Console.WriteLine($"{alfaJel} = {atalakitottAlfaSzogMegadott}°");
+                        Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                        Console.WriteLine($"{gammaJel} = {gammaSzogKeresett:F2}°");
+                    }
+                    else if (!vanMegadvaAlfaSzog && vanMegadvaBetaSzog && !vanMegadvaGammaSzog)
+                    {
+                        double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(cOldalMegadott);
+                        double alfaSzogKeresett = 90;
+                        double bOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottAOldalMegadott * atalakitottAOldalMegadott);
+                        double gammaSzogKeresett = Math.Asin(bOldalKeresett / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        char alfaJel = 'α';
+                        char betaJel = 'β';
+                        char gammaJel = 'γ';
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"b = {bOldalKeresett:F2}");
+                        Console.WriteLine($"{alfaJel} = {alfaSzogKeresett}°");
+                        Console.WriteLine($"{gammaJel} = {gammaSzogKeresett:F2}°");
+                    }
+                    else if (!vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && vanMegadvaGammaSzog)
+                    {
+                        double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(cOldalMegadott);
+                        double atalakitottAlfaSzogMegadott = Convert.ToDouble(alfaSzogMegadott);
+                        double bOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottAOldalMegadott * atalakitottAOldalMegadott);
+                        double betaSzogKeresett = Math.Asin(atalakitottAOldalMegadott / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        char alfaJel = 'α';
+                        char betaJel = 'β';
+                        char gammaJel = 'γ';
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"b = {bOldalKeresett:F2}");
+                        Console.WriteLine($"{alfaJel} = {atalakitottAlfaSzogMegadott}°");
+                        Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                    }
+                    else if (vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && vanMegadvaGammaSzog)
+                    {
+                        double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(cOldalMegadott);
+                        double atalakitottAlfaSzogMegadott = Convert.ToDouble(alfaSzogMegadott);
+                        double bOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottAOldalMegadott * atalakitottAOldalMegadott);
+                        double betaSzogKeresett = Math.Asin(atalakitottAOldalMegadott / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        char alfaJel = 'α';
+                        char betaJel = 'β';
+                        char gammaJel = 'γ';
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"b = {bOldalKeresett:F2}");
+                        Console.WriteLine($"{alfaJel} = {atalakitottAlfaSzogMegadott}°");
+                        Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                    }
+                    else if (vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && vanMegadvaGammaSzog)
+                    {
+                        double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(cOldalMegadott);
+                        double bOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottAOldalMegadott * atalakitottAOldalMegadott);
+                        double betaSzogKeresett = Math.Asin(atalakitottAOldalMegadott / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        char alfaJel = 'α';
+                        char betaJel = 'β';
+                        char gammaJel = 'γ';
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"b = {bOldalKeresett:F2}");
+                        Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                    }
+                    else if (!vanMegadvaAlfaSzog && vanMegadvaBetaSzog && vanMegadvaGammaSzog)
+                    {
+                        double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(cOldalMegadott);
+                        double atalakitottAlfaSzogMegadott = Convert.ToDouble(alfaSzogMegadott);
+                        double bOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottAOldalMegadott * atalakitottAOldalMegadott);
+                        char alfaJel = 'α';
+                        char betaJel = 'β';
+                        char gammaJel = 'γ';
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"c = {bOldalKeresett:F2}");
+                        Console.WriteLine($"{alfaJel} = {atalakitottAlfaSzogMegadott}°");
+                    }
+                    else
+                    {
+                        double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(cOldalMegadott);
+                        double bOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottAOldalMegadott * atalakitottAOldalMegadott);
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"b = {bOldalKeresett:F2}");
+                    }
+                }
+
+                if (vanMegadvaBOldal && vanMegadvaCOldal && !vanMegadvaAOldal)
+                {
+                    if (!vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && !vanMegadvaGammaSzog)
+                    {
+                        double atalakitottBOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(cOldalMegadott);
+                        double aOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottBOldalMegadott * atalakitottBOldalMegadott);
+                        double alfaSzogKeresett = 90;
+                        double betaSzogKeresett = Math.Asin(aOldalKeresett / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        double gammaSzogKeresett = Math.Asin(atalakitottBOldalMegadott / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        char alfaJel = 'α';
+                        char betaJel = 'β';
+                        char gammaJel = 'γ';
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"a = {aOldalKeresett:F2}");
+                        Console.WriteLine($"{alfaJel} = {alfaSzogKeresett}°");
+                        Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                        Console.WriteLine($"{gammaJel} = {gammaSzogKeresett:F2}°");
+                    }
+                    else if (vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && !vanMegadvaGammaSzog)
+                    {
+                        double atalakitottBOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(cOldalMegadott);
+                        double atalakitottAlfaSzogMegadott = Convert.ToDouble(alfaSzogMegadott);
+                        double aOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottBOldalMegadott * atalakitottBOldalMegadott);
+                        double betaSzogKeresett = Math.Asin(aOldalKeresett / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        double gammaSzogKeresett = Math.Asin(atalakitottBOldalMegadott / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        char alfaJel = 'α';
+                        char betaJel = 'β';
+                        char gammaJel = 'γ';
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"a = {aOldalKeresett:F2}");
+                        Console.WriteLine($"{alfaJel} = {atalakitottAlfaSzogMegadott}°");
+                        Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                        Console.WriteLine($"{gammaJel} = {gammaSzogKeresett:F2}°");
+                    }
+                    else if (!vanMegadvaAlfaSzog && vanMegadvaBetaSzog && !vanMegadvaGammaSzog)
+                    {
+                        double atalakitottBOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(cOldalMegadott);
+                        double alfaSzogKeresett = 90;
+                        double aOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottBOldalMegadott * atalakitottBOldalMegadott);
+                        double gammaSzogKeresett = Math.Asin(atalakitottBOldalMegadott / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        char alfaJel = 'α';
+                        char betaJel = 'β';
+                        char gammaJel = 'γ';
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"a = {aOldalKeresett:F2}");
+                        Console.WriteLine($"{alfaJel} = {alfaSzogKeresett}°");
+                        Console.WriteLine($"{gammaJel} = {gammaSzogKeresett:F2}°");
+                    }
+                    else if (!vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && vanMegadvaGammaSzog)
+                    {
+                        double atalakitottBOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(cOldalMegadott);
+                        double atalakitottAlfaSzogMegadott = Convert.ToDouble(alfaSzogMegadott);
+                        double aOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottBOldalMegadott * atalakitottBOldalMegadott);
+                        double betaSzogKeresett = Math.Asin(aOldalKeresett / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        char alfaJel = 'α';
+                        char betaJel = 'β';
+                        char gammaJel = 'γ';
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"a = {aOldalKeresett:F2}");
+                        Console.WriteLine($"{alfaJel} = {atalakitottAlfaSzogMegadott}°");
+                        Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                    }
+                    else if (vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && vanMegadvaGammaSzog)
+                    {
+                        double atalakitottBOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(cOldalMegadott);
+                        double atalakitottAlfaSzogMegadott = Convert.ToDouble(alfaSzogMegadott);
+                        double aOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottBOldalMegadott * atalakitottBOldalMegadott);
+                        double betaSzogKeresett = Math.Asin(aOldalKeresett / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        char alfaJel = 'α';
+                        char betaJel = 'β';
+                        char gammaJel = 'γ';
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"a = {aOldalKeresett:F2}");
+                        Console.WriteLine($"{alfaJel} = {atalakitottAlfaSzogMegadott}°");
+                        Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                    }
+                    else if (vanMegadvaAlfaSzog && !vanMegadvaBetaSzog && vanMegadvaGammaSzog)
+                    {
+                        double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                        double bOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottAOldalMegadott * atalakitottAOldalMegadott);
+                        double betaSzogKeresett = Math.Asin(atalakitottAOldalMegadott / atalakitottCOldalMegadott) * 180 / Math.PI;
+                        char alfaJel = 'α';
+                        char betaJel = 'β';
+                        char gammaJel = 'γ';
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"b = {bOldalKeresett:F2}");
+                        Console.WriteLine($"{betaJel} = {betaSzogKeresett:F2}°");
+                    }
+                    else if (!vanMegadvaAlfaSzog && vanMegadvaBetaSzog && vanMegadvaGammaSzog)
+                    {
+                        double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                        double atalakitottAlfaSzogMegadott = Convert.ToDouble(alfaSzogMegadott);
+                        double bOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottAOldalMegadott * atalakitottAOldalMegadott);
+                        char alfaJel = 'α';
+                        char betaJel = 'β';
+                        char gammaJel = 'γ';
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"c = {bOldalKeresett:F2}");
+                        Console.WriteLine($"{alfaJel} = {atalakitottAlfaSzogMegadott}°");
+                    }
+                    else
+                    {
+                        double atalakitottAOldalMegadott = Convert.ToDouble(aOldalMegadott);
+                        double atalakitottCOldalMegadott = Convert.ToDouble(bOldalMegadott);
+                        double bOldalKeresett = Math.Sqrt(atalakitottCOldalMegadott * atalakitottCOldalMegadott + atalakitottAOldalMegadott * atalakitottAOldalMegadott);
+                        Console.WriteLine("x-x Kiszámolt adatok! x-x");
+                        Console.WriteLine($"b = {bOldalKeresett:F2}");
+                    }
+                }
+            }
+            // a + c → b
+            
+            // b + c → a
+            else if (vanMegadvaBOldal && vanMegadvaCOldal && !vanMegadvaAOldal)
+            {
+                a = Math.Sqrt(c * c - b * b);
+            }
+            //// c + alfa → a, b
+            //else if (vanMegadvaCOldal && vanAlfa)
+            //{
+            //    a = c * Math.Sin(alfaRad);
+            //    b = c * Math.Cos(alfaRad);
+            //    beta = 90 - alfa;
+            //}
+            else
+            {
+                throw new ArgumentException("Nincs elegendő adat a számításhoz.");
+            }           
+        }
+
+        // TODO (Dani) : SzerkeszhetoeHaromszog
+        private static bool SzerkeszhetoeHaromszog(double aOldalSzerkeszthetoseghez, double bOldalSzerkeszthetoseghez, double cOldalSzerkeszthetoseghez)
+        {
+            string szerkeszthetoe = "";
+            if (aOldalSzerkeszthetoseghez < bOldalSzerkeszthetoseghez + cOldalSzerkeszthetoseghez & bOldalSzerkeszthetoseghez < aOldalSzerkeszthetoseghez + cOldalSzerkeszthetoseghez & cOldalSzerkeszthetoseghez < aOldalSzerkeszthetoseghez + bOldalSzerkeszthetoseghez)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+       }
+    }

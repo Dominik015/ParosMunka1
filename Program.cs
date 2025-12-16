@@ -1,27 +1,34 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Triangle_Program
 {
     internal class Program
     {
+        static bool futas = true;
+
         static void Main(string[] args)
         {
             UdvozloKep();
-            List<string> menupontok = new List<string>();
-            menupontok.Add("Kerület számítása");
-            menupontok.Add("Terület számítása");
-            menupontok.Add("Hiányzó adatok számítása");
-            menupontok.Add("Háromszög ábrázolása");
-            menupontok.Add("Kilépés");
+            // todo: Dániel
+            List<string> menupontok = new List<string>()
+            {
+                "Kerület számítása",
+                "Terület számítása",
+                "Hiányzó oldal számítása derékszögű háromszögnél",
+                "Háromszög ábrázolása",
+                "Kilépés"
+            };
+
             ListazMenu(menupontok);
-            bool futas = true;
+
             do
             {
-                Console.SetCursorPosition(30, 0);
-                Console.WriteLine("Mit szeretne csinálni?");
+                Console.WriteLine();
+                Console.Write("Mit szeretne csinálni? ");
                 byte inputUtasitas = Convert.ToByte(Console.ReadLine());
                 ElvegzendoFeladat(inputUtasitas);
-            } 
+            }
             while (futas);
 
             Console.WriteLine("Vége!");
@@ -29,12 +36,13 @@ namespace Triangle_Program
 
         private static void ListazMenu(List<string> menupontok)
         {
-            //
-            
-            Console.Write("| " + menupontok[0] + " [1] | " + menupontok[1] + " [2] | " + menupontok[2] + " [3] | " + menupontok[3] + " [4] | " + menupontok[4] + " [5] |");
-
-            throw new NotImplementedException("Még nincs kész, ezért ne használd!");
-            Console.WriteLine("ide már jut el!");
+            Console.WriteLine(
+                "| " + menupontok[0] + " [1] | " +
+                menupontok[1] + " [2] | " +
+                menupontok[2] + " [3] | " +
+                menupontok[3] + " [4] | " +
+                menupontok[4] + " [5] |"
+            );
         }
 
         private static void ElvegzendoFeladat(byte inputUtasitas)
@@ -42,54 +50,135 @@ namespace Triangle_Program
             switch (inputUtasitas)
             {
                 case 1:
-                    Console.WriteLine("Adja meg az A oldalt: ");
+                    Console.Write("Adja meg az A oldalt: ");
                     double aOldal = Convert.ToDouble(Console.ReadLine());
-                    Console.WriteLine("Adja meg az B oldalt: ");
+
+                    Console.Write("Adja meg a B oldalt: ");
                     double bOldal = Convert.ToDouble(Console.ReadLine());
-                    Console.WriteLine("Adja meg az C oldalt: ");
+
+                    Console.Write("Adja meg a C oldalt: ");
                     double cOldal = Convert.ToDouble(Console.ReadLine());
+
                     KeruletSzamitas(aOldal, bOldal, cOldal);
                     break;
+
                 case 2:
-                    Console.WriteLine("Adja meg háromszög magasságához tartozó oldalt: ");
-                    double magasssagOldal = Convert.ToDouble(Console.ReadLine());
-                    Console.WriteLine("Adja meg háromszög magasságához tartozó oldalt: ");
+                    Console.Write("Adja meg az alapot: ");
+                    double alap = Convert.ToDouble(Console.ReadLine());
+
+                    Console.Write("Adja meg a magasságot: ");
                     double magassag = Convert.ToDouble(Console.ReadLine());
-                    TeruletSzamitas(magasssagOldal, magassag);
+
+                    TeruletSzamitas(alap, magassag);
                     break;
+
                 case 3:
-                    Console.WriteLine("Adja meg az A oldalt: ");
-                    string aOldalMegadott = Console.ReadLine();
-                    Console.WriteLine("Adja meg az B oldalt: ");
-                    string bOldalMegadott = Console.ReadLine();
-                    Console.WriteLine("Adja meg az C oldalt: ");
-                    string cOldalMegadott = Console.ReadLine();
-                    Console.WriteLine("Adja meg az αlfa szöget: ");
-                    string alfaSzogMegadott = Console.ReadLine();
-                    Console.WriteLine("Adja meg a beta szöget: ");
-                    string betaSzoglMegadott = Console.ReadLine();
-                    Console.WriteLine("Adja meg a gamma szöget: ");
-                    string gammaSzogMegadott = Console.ReadLine();
 
-                    HianyzoAdatokSzamitas(aOldalMegadott, bOldalMegadott, cOldalMegadott, betaSzoglMegadott, gammaSzogMegadott);
+                    Console.Write("A oldal: ");
+                    string a = Console.ReadLine();
+
+                    Console.Write("B oldal: ");
+                    string b = Console.ReadLine();
+
+                    Console.Write("C oldal: ");
+                    string c = Console.ReadLine();
+
+                    Console.Write("Alfa szög: ");
+                    string alfa = Console.ReadLine();
+
+                    Console.Write("Béta szög: ");
+                    string beta = Console.ReadLine();
+
+                    Console.Write("Gamma szög: ");
+                    string gamma = Console.ReadLine();
+
+                    HianyzoAdatokSzamitasa(a, b, c, alfa, beta, gamma);
                     break;
+
                 case 4:
+                    Console.WriteLine("Ábrázolás nincs kész.");
+                    break;
 
-                    break;
                 case 5:
-                    bool futas = false;
+                    futas = false;
                     break;
+
                 default:
+                    Console.WriteLine("");
                     break;
             }
         }
+        // todo: Dominik
+        private static double KeruletSzamitas(double a, double b, double c)
+        {
+            double kerulet = a + b + c;
+            Console.WriteLine($"A háromszög kerülete: {kerulet}");
+            return kerulet;
+        }
+
+        private static double TeruletSzamitas(double alap, double magassag)
+        {
+            double terulet = alap * magassag / 2;
+            Console.WriteLine($"A háromszög területe: {terulet}");
+            return terulet;
+        }
+
+        private static void HianyzoAdatokSzamitasa(
+            string aOld,
+            string bOld,
+            string cOld,
+            string alfaSzog,
+            string betaSzog,
+            string gammaSzog)
+        {
+            bool vanA = !string.IsNullOrWhiteSpace(aOld);
+            bool vanB = !string.IsNullOrWhiteSpace(bOld);
+            bool vanC = !string.IsNullOrWhiteSpace(cOld);
+
+            bool alfa90 = alfaSzog == "90";
+            bool beta90 = betaSzog == "90";
+            bool gamma90 = gammaSzog == "90";
+
+            if (!(alfa90 || beta90 || gamma90))
+            {
+                Console.WriteLine("Csak derékszögű háromszög számítása van.");
+                return;
+            }
+
+            if (vanA && vanB && !vanC)
+            {
+                double a = Convert.ToDouble(aOld);
+                double b = Convert.ToDouble(bOld);
+                double c = Math.Sqrt(a * a + b * b);
+                Console.WriteLine($"Hiányzó C oldal: {c}");
+                return;
+            }
+
+            if (vanA && vanC && !vanB)
+            {
+                double a = Convert.ToDouble(aOld);
+                double c = Convert.ToDouble(cOld);
+                double b = Math.Sqrt(c * c - a * a);
+                Console.WriteLine($"Hiányzó B oldal: {b}");
+                return;
+            }
+
+            if (vanB && vanC && !vanA)
+            {
+                double b = Convert.ToDouble(bOld);
+                double c = Convert.ToDouble(cOld);
+                double a = Math.Sqrt(c * c - b * b);
+                Console.WriteLine($"Hiányzó A oldal: {a}");
+                return;
+            }
+            else
+                Console.WriteLine("Nincs elég adat a számításhoz.");
+        }
+
         private static void UdvozloKep()
         {
             Console.Clear();
-            Console.SetCursorPosition(30, 0);
             Console.WriteLine("Üdvözlöm a háromszög szuper alkalmazásban!");
-
-
         }
     }
 }
